@@ -1,6 +1,6 @@
 {
   "name": "recrawl",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "lib/recrawl.js",
   "license": "MIT",
   "repository": "https://github.com/aleclarson/recrawl.git",
