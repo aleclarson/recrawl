@@ -61,9 +61,8 @@ recrawl = (opts = {}) ->
             depth += 1
             crawl name + '/'
             depth -= 1
-          continue
 
-        if only(name, base) and filter(name, base)
+        else if only(name, base) and filter(name, base)
           mode = follow and lstatSync(root + name).mode & S_IFMT
           each name,
             if mode is S_IFLNK
