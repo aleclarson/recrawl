@@ -1,0 +1,15 @@
+{
+  "name": "recrawl",
+  "version": "0.0.1",
+  "main": "lib/recrawl.js",
+  "license": "MIT",
+  "repository": "https://github.com/aleclarson/recrawl.git",
+  "scripts": {
+    "build": "coffee-build src -o lib",
+    "prepublishOnly": "prepv -i || true"
+  },
+  "devDependencies": {
+    "coffeescript": "^2.3.0",
+    "wch-coffee": "^0.2.0"
+  }
+}
