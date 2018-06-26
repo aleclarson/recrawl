@@ -55,6 +55,7 @@ recrawl = (opts = {}) ->
 
         mode = statSync(root + name).mode & S_IFMT
         if mode is S_IFDIR
+          continue if depth is maxDepth
           if enter name, depth
             depth += 1
             crawl name + '/'
