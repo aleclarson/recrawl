@@ -89,35 +89,28 @@ Matcher = (globs, matchEmpty) ->
   else if !globs or !globs.length
     return matchEmpty
 
-  rootRE = []  # match for root children
   nameRE = []  # match against root relatives
   baseRE = []  # match against basenames
 
   globs.forEach (glob) ->
 
-    if glob.indexOf(path.sep) is -1
-      baseRE.push globRegex.replace(glob)
-      return
+    if !based = glob.indexOf(path.sep) is -1
 
-    if glob.slice(-1) is '/'
-      glob += '**'
+      if glob[0] is path.sep
+        glob = glob.slice 1
 
-    if glob[0] is path.sep
-      rootRE.push globRegex.replace(glob.slice 1)
-      return
+      else if glob[0] isnt '*'
+        glob = '**/' + glob
 
-    if glob[0] isnt '*'
-      glob = '**/' + glob
+      if glob.slice(-1) is '/'
+        glob += '**'
 
-    nameRE.push globRegex.replace(glob)
-    return
+    (based and baseRE or nameRE).push globRegex.replace(glob)
 
-  rootRE = rootRE.length and matchAny(rootRE) or null
   nameRE = nameRE.length and matchAny(nameRE) or null
   baseRE = baseRE.length and matchAny(baseRE) or null
 
-  return (name, base, dir) ->
-    (dir is '' and rootRE and rootRE.test name) or
+  return (name, base) ->
     (baseRE and baseRE.test base) or
     !(nameRE and !nameRE.test name)
 

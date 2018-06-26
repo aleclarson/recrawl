@@ -79,19 +79,14 @@ Recrawl has its own take on globbing.
 'foo/' // matches 'foo/bar' and 'foo/bar/baz' etc
 ```
 
-5. Expansion braces are legal.
+5. Regular expression syntax is supported. (except dot-all)
 
 ```js
-'*.{js,ts}' // matches 'a.js' and 'b.ts'
+'*.jsx?'    // matches 'a.js' and 'b.jsx'
+'*.(js|ts)' // matches 'a.js' and 'b.ts'
 ```
 
-6. Regular expression syntax is legal. (except dot-all)
-
-```js
-'*.jsx?' // matches 'a.js' and 'b.jsx'
-```
-
-7. Recursive globbing is allowed.
+6. Recursive globbing is supported.
 
 ```js
 'foo/**/bar' // matches 'foo/bar' and 'foo/a/b/c/bar' etc
