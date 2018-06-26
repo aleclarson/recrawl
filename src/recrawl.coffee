@@ -51,7 +51,7 @@ recrawl = (opts = {}) ->
     crawl = (dir) ->
       for base in readdirSync root + dir
         name = dir + base
-        continue if !only(name, base) or skip(name, base)
+        continue if skip name, base
 
         mode = statSync(root + name).mode & S_IFMT
         if mode is S_IFDIR
@@ -62,7 +62,7 @@ recrawl = (opts = {}) ->
             depth -= 1
           continue
 
-        if filter name
+        if only(name, base) and filter(name, base)
           mode = follow and lstatSync(root + name).mode & S_IFMT
           each name,
             if mode is S_IFLNK
