@@ -78,6 +78,8 @@ module.exports = recrawl
 # Helpers
 #
 
+notBasedRE = new RegExp "(?:\\#{path.sep}|\\*\\*)"
+
 matchAny = (patterns) ->
   new RegExp '^(?:' + patterns.join('|') + ')$'
 
@@ -94,7 +96,7 @@ Matcher = (globs, matchEmpty) ->
 
   globs.forEach (glob) ->
 
-    if !based = glob.indexOf(path.sep) is -1
+    if notBasedRE.test glob
 
       if glob[0] is path.sep
         glob = glob.slice 1
@@ -105,14 +107,18 @@ Matcher = (globs, matchEmpty) ->
       if glob.slice(-1) is '/'
         glob += '**'
 
-    (based and baseRE or nameRE).push globRegex.replace(glob)
+      nameRE.push globRegex.replace(glob)
+    else
+      baseRE.push globRegex.replace(glob)
 
   nameRE = nameRE.length and matchAny(nameRE) or null
   baseRE = baseRE.length and matchAny(baseRE) or null
 
-  return (name, base) ->
-    (baseRE and baseRE.test base) or
-    !(nameRE and !nameRE.test name)
+  if baseRE
+    if nameRE
+    then (name, base) -> baseRE.test(base) or nameRE.test(name)
+    else (name, base) -> baseRE.test(base)
+  else (name, base) -> nameRE.test(name)
 
 Follower = (match) ->
   return (name, root) ->
