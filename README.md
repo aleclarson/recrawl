@@ -29,8 +29,8 @@ crawl(root, function(file, link) {
 
 ### Options
 
-- `only: ?string[]`
-- `skip: ?string[]`
+- `only: ?string|string[]`
+- `skip: ?string|string[]`
 - `deep: ?boolean`
 - `depth: ?number`
 - `enter: ?function`

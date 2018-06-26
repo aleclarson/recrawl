@@ -82,7 +82,12 @@ matchAny = (patterns) ->
   new RegExp '^(' + patterns.join('|') + ')$'
 
 Matcher = (globs, matchEmpty) ->
-  return matchEmpty if !globs or !globs.length
+
+  if typeof globs is 'string'
+    globs = [globs]
+
+  else if !globs or !globs.length
+    return matchEmpty
 
   rootRE = []  # match for root children
   nameRE = []  # match against root relatives
