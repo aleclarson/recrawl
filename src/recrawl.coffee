@@ -2,7 +2,7 @@ globRegex = require 'glob-regex'
 path = require 'path'
 fs = require 'fs'
 
-{lstatSync, readdirSync, readlinkSync} = fs
+{lstatSync, readdirSync, readlinkSync, statSync} = fs
 {S_IFMT, S_IFLNK, S_IFDIR} = fs.constants
 
 alwaysTrue = -> true
@@ -19,12 +19,10 @@ recrawl = (opts = {}) ->
 
   enter or= alwaysTrue
   filter or= alwaysTrue
-
-  follow =
-    (follow and (follow is true  and Follower alwaysTrue) or
-    (typeof follow is 'number'   and Follower limitDepth follow) or
-    (typeof follow is 'function' and Follower follow)) or
-    (Follower alwaysFalse)
+  follow and=
+    (follow is true and Follower alwaysTrue) or
+    (typeof follow is 'number' and Follower limitDepth follow) or
+    (typeof follow is 'function' and Follower follow)
 
   maxDepth =
     if typeof opts.depth is 'number'
@@ -53,9 +51,9 @@ recrawl = (opts = {}) ->
     crawl = (dir) ->
       for base in readdirSync root + dir
         name = dir + base
-        continue if !only(name, base, dir) or skip(name, base, dir)
-        mode = lstatSync(root + name).mode & S_IFMT
+        continue if !only(name, base) or skip(name, base)
 
+        mode = statSync(root + name).mode & S_IFMT
         if mode is S_IFDIR
           if enter name, depth
             depth += 1
@@ -64,6 +62,7 @@ recrawl = (opts = {}) ->
           continue
 
         if filter name
+          mode = follow and lstatSync(root + name).mode & S_IFMT
           each name,
             if mode is S_IFLNK
             then follow name, root
