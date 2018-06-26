@@ -39,7 +39,7 @@ recrawl = (opts = {}) ->
         files = arg
 
     if !each
-      files or= {}
+      files or= follow and {} or []
       each =
         if Array.isArray files
         then (file) -> files.push file
