@@ -79,7 +79,7 @@ module.exports = recrawl
 #
 
 matchAny = (patterns) ->
-  new RegExp '^(' + patterns.join('|') + ')$'
+  new RegExp '^(?:' + patterns.join('|') + ')$'
 
 Matcher = (globs, matchEmpty) ->
 
