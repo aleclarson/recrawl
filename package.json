@@ -8,6 +8,10 @@
     "build": "coffee-build src -o lib",
     "prepublishOnly": "prepv -i || true"
   },
+  "dependencies": {
+    "@cush/relative": "^0.0.1",
+    "glob-regex": "^0.3.0"
+  },
   "devDependencies": {
     "coffeescript": "^2.3.0",
     "wch-coffee": "^0.2.0"

@@ -1,4 +1,5 @@
 globRegex = require 'glob-regex'
+relative = require '@cush/relative'
 path = require 'path'
 fs = require 'fs'
 
