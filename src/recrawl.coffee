@@ -44,8 +44,8 @@ recrawl = (opts = {}) ->
       each =
         if Array.isArray files
         then (file) -> files.push file
-        else (file, link) ->
-          files[file] = link or true
+        else (file, link = true) ->
+          files[file] = link
           return
 
     depth = 0
