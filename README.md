@@ -65,7 +65,7 @@ Recrawl has its own take on globbing.
 2. Recursivity is implicit.
 
 ```js
-'node_modules' // matches 'node_modules' and 'foo/node_modules'
+'a/b' // identical to '**/a/b'
 ```
 
 3. Use a leading separator to match against the root.
