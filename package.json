@@ -9,7 +9,7 @@
     "prepublishOnly": "prepv -i || true"
   },
   "dependencies": {
-    "@cush/relative": "^0.0.1",
+    "@cush/relative": "^0.1.0",
     "glob-regex": "^0.3.0"
   },
   "devDependencies": {
