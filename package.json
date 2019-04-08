@@ -13,7 +13,7 @@
     "glob-regex": "^0.3.0"
   },
   "devDependencies": {
-    "coffeescript": "^2.3.0",
-    "wch-coffee": "^0.2.0"
+    "coffeescript": "2.4.1",
+    "wch-coffee": "0.2.0"
   }
 }
