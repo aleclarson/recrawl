@@ -3,7 +3,7 @@
   "compilerOptions": {
     "declaration": true,
     "lib": ["es2017"],
-    "moduleResolution": "node",
+    "module": "commonjs",
     "importHelpers": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
