@@ -49,7 +49,7 @@ export const recrawl = (opts: Options = {}) => {
   type EachArg = ((file: string, link: string | null) => void) | undefined
   type FilesArg = { [name: string]: string | boolean } | string[] | undefined
 
-  return (root: string, arg?: EachArg | FilesArg) => {
+  return async (root: string, arg?: EachArg | FilesArg) => {
     root = path.resolve(root) + path.sep
 
     let each: EachArg
@@ -76,7 +76,7 @@ export const recrawl = (opts: Options = {}) => {
           if (depth == maxDepth) continue
           if (enter(name, depth)) {
             depth++
-            crawl(name + path.sep)
+            await crawl(name + path.sep)
             depth--
           }
         } else if (only.match(name, base) && filter(name, base)) {
@@ -86,7 +86,7 @@ export const recrawl = (opts: Options = {}) => {
       }
     }
 
-    crawl('')
+    await crawl('')
     return files!
   }
 }
