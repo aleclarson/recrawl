@@ -1,0 +1,16 @@
+{
+  "include": ["src"],
+  "compilerOptions": {
+    "declaration": true,
+    "lib": ["es2017"],
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noImplicitUseStrict": true,
+    "outDir": "lib",
+    "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "target": "es2017"
+  }
+}

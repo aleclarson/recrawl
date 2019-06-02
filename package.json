@@ -5,15 +5,32 @@
   "license": "MIT",
   "repository": "https://github.com/aleclarson/recrawl.git",
   "scripts": {
-    "build": "coffee-build src -o lib",
-    "prepublishOnly": "prepv -i || true"
+    "build": "tsc -p ."
   },
   "dependencies": {
-    "@cush/relative": "^0.0.1",
-    "glob-regex": "^0.3.0"
+    "@cush/relative": "^0.1.0",
+    "glob-regex": "^0.3.0",
+    "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "coffeescript": "^2.3.0",
-    "wch-coffee": "^0.2.0"
-  }
+    "@types/node": "^10.12.9",
+    "prettier": "^1.15.2",
+    "tslint": "^5.11.0",
+    "tslint-mango": "^0.1.6",
+    "typescript": "^3.1.6"
+  },
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "fs",
+    "crawl",
+    "crawler",
+    "directory",
+    "readdir",
+    "glob",
+    "globby",
+    "recrawl",
+    "tiny"
+  ]
 }
