@@ -2,7 +2,8 @@ import relative from '@cush/relative'
 import * as fs from 'fs'
 import globRegex from 'glob-regex'
 import * as path from 'path'
-import { FileAdapter, localFs } from './fs'
+import { localFs } from './fs'
+import { Crawler, EachArg, FilesArg, RecrawlOptions } from './types'
 
 const { S_IFMT, S_IFLNK, S_IFDIR } = fs.constants
 
@@ -10,27 +11,14 @@ const limitDepth = (limit: number) => (_: any, depth: number) => depth < limit
 const alwaysTrue = () => true
 const alwaysFalse = () => false
 
-export type DirFilter = (dir: string, depth: number) => boolean
-export type FileFilter = (file: string, name: string) => boolean
-export type LinkFilter = (link: string, depth: number) => boolean
-
-export type RecrawlOptions = Options
-type Options = {
-  only?: string[]
-  skip?: string[]
-  deep?: boolean
-  depth?: number
-  enter?: DirFilter
-  filter?: FileFilter
-  follow?: boolean | number | LinkFilter
-  adapter?: FileAdapter
-}
-
 /** Create a crawl function, and crawl the given root immediately */
-export const crawl = (root: string, opts: Options = {}) => recrawl(opts)(root)
+export const crawl = (root: string, opts: RecrawlOptions = {}) =>
+  recrawl(opts)(root)
 
 /** Create a crawl function */
-export const recrawl = (opts: Options = {}) => {
+export function recrawl<T extends RecrawlOptions>(
+  opts: T = {} as any
+): Crawler<T> {
   const only = new Matcher(opts.only, alwaysTrue)
   const skip = new Matcher(opts.skip, alwaysFalse)
 
@@ -46,14 +34,11 @@ export const recrawl = (opts: Options = {}) => {
       ? 0
       : Infinity
 
-  type EachArg = ((file: string, link: string | null) => void) | undefined
-  type FilesArg = { [name: string]: string | boolean } | string[] | undefined
-
-  return async (root: string, arg?: EachArg | FilesArg) => {
+  return async (root: string, arg?: any) => {
     root = path.resolve(root) + path.sep
 
-    let each: EachArg
-    let files: FilesArg
+    let each: EachArg | undefined
+    let files: FilesArg | undefined
     if (typeof arg == 'function') {
       each = arg
     } else {
@@ -87,7 +72,7 @@ export const recrawl = (opts: Options = {}) => {
     }
 
     await crawl('')
-    return files!
+    return files as any
   }
 }
 
@@ -136,7 +121,7 @@ class Matcher {
   }
 }
 
-function createFollower(opts: Options) {
+function createFollower(opts: RecrawlOptions) {
   const fs = opts.adapter || localFs
   const filter =
     opts.follow === true
