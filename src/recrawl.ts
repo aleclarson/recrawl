@@ -65,8 +65,12 @@ export function recrawl<T extends RecrawlOptions>(
             depth--
           }
         } else if (only.match(name, base) && filter(name, base)) {
-          mode = follow && (await fs.lstat(root + name)).mode & S_IFMT
-          each!(name, mode === S_IFLNK ? await follow(name, root) : null)
+          let link: string | null = null
+          if (follow) {
+            mode = (await fs.lstat(root + name)).mode & S_IFMT
+            if (mode === S_IFLNK) link = await follow(name, root)
+          }
+          each!(name, link)
         }
       }
     }
@@ -133,7 +137,7 @@ function createFollower(opts: RecrawlOptions) {
       : null
 
   // The "name" argument must be relative to the "root" argument.
-  if (!filter) return async (name: string | null) => name
+  if (!filter) return null
   return async (name: string | null, root: string) => {
     let depth = 0
     if (name === null || !filter(name, depth)) {
