@@ -19,8 +19,8 @@ export const crawl = (root: string, opts: RecrawlOptions = {}) =>
 export function recrawl<T extends RecrawlOptions>(
   opts: T = {} as any
 ): Crawler<T> {
-  const only = new Matcher(opts.only, alwaysTrue)
-  const skip = new Matcher(opts.skip, alwaysFalse)
+  const only = createMatcher(opts.only) || alwaysTrue
+  const skip = createMatcher(opts.skip) || alwaysFalse
 
   const fs = opts.adapter || localFs
   const enter = opts.enter || alwaysTrue
@@ -52,25 +52,25 @@ export function recrawl<T extends RecrawlOptions>(
 
     let depth = 0
     const crawl = async (dir: string) => {
-      for (const base of await fs.readdir(root + dir)) {
-        const name = dir + base
-        if (skip.match(name, base)) continue
+      for (const name of await fs.readdir(root + dir)) {
+        const file = dir + name
+        if (skip(file, name)) continue
 
-        let mode = (await fs.stat(root + name)).mode & S_IFMT
+        let mode = (await fs.stat(root + file)).mode & S_IFMT
         if (mode == S_IFDIR) {
           if (depth == maxDepth) continue
-          if (enter(name, depth)) {
+          if (enter(file, depth)) {
             depth++
-            await crawl(name + path.sep)
+            await crawl(file + path.sep)
             depth--
           }
-        } else if (only.match(name, base) && filter(name, base)) {
+        } else if (only(file, name) && filter(file, name)) {
           let link: string | null = null
           if (follow) {
-            mode = (await fs.lstat(root + name)).mode & S_IFMT
-            if (mode === S_IFLNK) link = await follow(name, root)
+            mode = (await fs.lstat(root + file)).mode & S_IFMT
+            if (mode === S_IFLNK) link = await follow(file, root)
           }
-          each!(name, link)
+          each!(file, link)
         }
       }
     }
@@ -87,44 +87,42 @@ const globAllRE = new RegExp(`(?:\\${path.sep}|\\*\\*)`)
 const matchAny = (patterns: string[]) =>
   new RegExp(`^(?:${patterns.join('|')})$`)
 
-class Matcher {
-  name?: RegExp
-  base?: RegExp
-
-  constructor(public globs: string[] = [], emptyMatch: () => boolean) {
-    if (!globs.length) {
-      this.match = emptyMatch
-      return
-    }
-    const namePatts = []
-    const basePatts = []
-    for (let glob of globs) {
-      if (globAllRE.test(glob)) {
-        if (glob[0] == path.sep) {
-          glob = glob.slice(1)
-        } else if (glob[0] !== '*') {
-          glob = '**/' + glob
-        }
-        if (glob.slice(-1) == '/') {
-          glob += '**'
-        }
-        namePatts.push(globRegex.replace(glob))
-      } else {
-        basePatts.push(globRegex.replace(glob))
+/**
+ * Create a function that tests against an array of Recrawl glob strings by
+ * compiling them into RegExp objects.
+ */
+export function createMatcher(
+  globs: string[] | undefined,
+  mapGlob = (glob: string) => glob
+) {
+  if (!globs || !globs.length) {
+    return null
+  }
+  const fileGlobs: string[] = []
+  const nameGlobs: string[] = []
+  globs.forEach(glob => {
+    if (globAllRE.test(glob)) {
+      if (glob[0] == path.sep) {
+        glob = glob.slice(1)
+      } else if (glob[0] !== '*') {
+        glob = '**/' + glob
       }
+      if (glob.endsWith('/')) {
+        glob += '**'
+      }
+      fileGlobs.push(globRegex.replace(mapGlob(glob)))
+    } else {
+      nameGlobs.push(globRegex.replace(mapGlob(glob)))
     }
-    if (namePatts.length) this.name = matchAny(namePatts)
-    if (basePatts.length) this.base = matchAny(basePatts)
-  }
-
-  match(name: string, base?: string) {
-    return (
-      (this.base && this.base.test(base || path.basename(name))) ||
-      (this.name && this.name.test(name))
-    )
-  }
+  })
+  const fileRE = fileGlobs.length ? matchAny(fileGlobs) : null
+  const nameRE = nameGlobs.length ? matchAny(nameGlobs) : null
+  return (file: string, name?: string) =>
+    (nameRE && nameRE.test(name || path.basename(file))) ||
+    (fileRE && fileRE.test(file))
 }
 
+// Create a function that follows symlinks.
 function createFollower(opts: RecrawlOptions) {
   const fs = opts.adapter || localFs
   const filter =
