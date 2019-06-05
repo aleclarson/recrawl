@@ -1,4 +1,4 @@
-# recrawl v1.2.1
+# recrawl v1.2.2
 
 Collect the descendants of a directory.
 
