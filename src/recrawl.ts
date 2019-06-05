@@ -121,12 +121,12 @@ export function createMatcher(
   const fileGlobs: string[] = []
   const nameGlobs: string[] = []
   globs.forEach(glob => {
-    if (mapGlob) glob = mapGlob(glob)
     if (globAllRE.test(glob)) {
-      fileGlobs.push(compileGlob(glob))
-    } else {
-      nameGlobs.push(globRegex.replace(glob))
+      glob = compileGlob(glob)
     }
+    if (mapGlob) glob = mapGlob(glob)
+    if (globAllRE.test(glob)) fileGlobs.push(glob)
+    else nameGlobs.push(globRegex.replace(glob))
   })
   const fileRE = fileGlobs.length ? matchAny(fileGlobs) : false
   const nameRE = nameGlobs.length ? matchAny(nameGlobs) : false
