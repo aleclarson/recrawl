@@ -87,6 +87,9 @@ const globAllRE = new RegExp(`(?:\\${path.sep}|\\*\\*)`)
 const matchAny = (patterns: string[]) =>
   new RegExp(`^(?:${patterns.join('|')})$`)
 
+/** Provide the `name` argument to avoid unnecessary `path.basename` calls */
+export type GlobMatcher = (file: string, name?: string) => boolean
+
 /**
  * Create a function that tests against an array of Recrawl glob strings by
  * compiling them into RegExp objects.
