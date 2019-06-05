@@ -91,12 +91,29 @@ const matchAny = (patterns: string[]) =>
 export type GlobMatcher = (file: string, name?: string) => boolean
 
 /**
+ * Compile a single Recrawl glob string into its "RegExp pattern" equivalent.
+ *
+ * Note: This is only useful for globs with "/" or "**" in them.
+ */
+export function compileGlob(glob: string) {
+  if (glob[0] == path.sep) {
+    glob = glob.slice(1)
+  } else if (glob[0] !== '*') {
+    glob = '**/' + glob
+  }
+  if (glob.endsWith('/')) {
+    glob += '**'
+  }
+  return globRegex.replace(glob)
+}
+
+/**
  * Create a function that tests against an array of Recrawl glob strings by
  * compiling them into RegExp objects.
  */
 export function createMatcher(
   globs: string[] | undefined,
-  mapGlob = (glob: string) => glob
+  mapGlob?: (glob: string) => string
 ): GlobMatcher | null {
   if (!globs || !globs.length) {
     return null
@@ -104,18 +121,11 @@ export function createMatcher(
   const fileGlobs: string[] = []
   const nameGlobs: string[] = []
   globs.forEach(glob => {
+    if (mapGlob) glob = mapGlob(glob)
     if (globAllRE.test(glob)) {
-      if (glob[0] == path.sep) {
-        glob = glob.slice(1)
-      } else if (glob[0] !== '*') {
-        glob = '**/' + glob
-      }
-      if (glob.endsWith('/')) {
-        glob += '**'
-      }
-      fileGlobs.push(globRegex.replace(mapGlob(glob)))
+      fileGlobs.push(compileGlob(glob))
     } else {
-      nameGlobs.push(globRegex.replace(mapGlob(glob)))
+      nameGlobs.push(globRegex.replace(glob))
     }
   })
   const fileRE = fileGlobs.length ? matchAny(fileGlobs) : false
