@@ -97,7 +97,7 @@ export type GlobMatcher = (file: string, name?: string) => boolean
 export function createMatcher(
   globs: string[] | undefined,
   mapGlob = (glob: string) => glob
-) {
+): GlobMatcher | null {
   if (!globs || !globs.length) {
     return null
   }
@@ -118,9 +118,9 @@ export function createMatcher(
       nameGlobs.push(globRegex.replace(mapGlob(glob)))
     }
   })
-  const fileRE = fileGlobs.length ? matchAny(fileGlobs) : null
-  const nameRE = nameGlobs.length ? matchAny(nameGlobs) : null
-  return (file: string, name?: string) =>
+  const fileRE = fileGlobs.length ? matchAny(fileGlobs) : false
+  const nameRE = nameGlobs.length ? matchAny(nameGlobs) : false
+  return (file, name) =>
     (nameRE && nameRE.test(name || path.basename(file))) ||
     (fileRE && fileRE.test(file))
 }
