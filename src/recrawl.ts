@@ -35,7 +35,7 @@ export function recrawl<T extends RecrawlOptions>(
       ? 0
       : Infinity
 
-  return async (root: string, arg?: any) => {
+  return (root: string, arg?: any) => {
     root = slash(path.resolve(root)) + '/'
 
     let each: EachArg
@@ -52,8 +52,8 @@ export function recrawl<T extends RecrawlOptions>(
     }
 
     let depth = 0
-    const crawl = async (dir: string) => {
-      for (const name of await fs.readdir(root + dir)) {
+    const crawl = (dir: string) => {
+      for (const name of fs.readdir(root + dir)) {
         let file = dir + name
         if (skip(file, name)) {
           continue
@@ -61,7 +61,7 @@ export function recrawl<T extends RecrawlOptions>(
 
         let mode: number | undefined
         try {
-          mode = (await fs.stat(root + file)).mode & S_IFMT
+          mode = fs.stat(root + file).mode & S_IFMT
         } catch (err) {
           if (err.code == 'ENOENT') {
             continue // Ignore broken symlinks.
@@ -75,14 +75,14 @@ export function recrawl<T extends RecrawlOptions>(
           }
           if (enter(file, depth)) {
             depth++
-            await crawl(file + '/')
+            crawl(file + '/')
             depth--
           }
         } else if (only(file, name) && filter(file, name)) {
           let link: string | null = null
           if (follow) {
-            mode = (await fs.lstat(root + file)).mode & S_IFMT
-            if (mode === S_IFLNK) link = await follow(file, root)
+            mode = fs.lstat(root + file).mode & S_IFMT
+            if (mode === S_IFLNK) link = follow(file, root)
           }
           if (opts.absolute) {
             file = root + file
@@ -92,7 +92,7 @@ export function recrawl<T extends RecrawlOptions>(
       }
     }
 
-    await crawl('')
+    crawl('')
     return files as any
   }
 }
@@ -168,7 +168,7 @@ function createFollower(opts: RecrawlOptions) {
 
   // The "name" argument must be relative to the "root" argument.
   if (!filter) return null
-  return async (name: string | null, root: string) => {
+  return (name: string | null, root: string) => {
     let depth = 0
     if (name === null || !filter(name, depth)) {
       return null
@@ -176,7 +176,7 @@ function createFollower(opts: RecrawlOptions) {
     let link = root + name
     let mode: number
     do {
-      let target = slash(await fs.readlink(link))
+      let target = slash(fs.readlink(link))
       if (path.isAbsolute(target)) {
         name = null
         link = target
@@ -194,7 +194,7 @@ function createFollower(opts: RecrawlOptions) {
         link = slash(path.resolve(path.dirname(link), target))
       }
       try {
-        mode = (await fs.lstat(link)).mode & S_IFMT
+        mode = fs.lstat(link).mode & S_IFMT
         if (mode !== S_IFLNK) break
       } catch {
         break

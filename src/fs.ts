@@ -1,15 +1,15 @@
 import * as fs from 'fs'
 
 export interface FileAdapter {
-  readdir(name: string): Promise<string[]>
-  readlink(name: string): Promise<string>
-  lstat(name: string): Promise<fs.Stats>
-  stat(name: string): Promise<fs.Stats>
+  readdir(name: string): string[]
+  readlink(name: string): string
+  lstat(name: string): fs.Stats
+  stat(name: string): fs.Stats
 }
 
 export const localFs: FileAdapter = {
-  readdir: async name => fs.readdirSync(name),
-  readlink: async name => fs.readlinkSync(name),
-  lstat: async name => fs.lstatSync(name),
-  stat: async name => fs.statSync(name),
+  readdir: name => fs.readdirSync(name),
+  readlink: name => fs.readlinkSync(name),
+  lstat: name => fs.lstatSync(name),
+  stat: name => fs.statSync(name),
 }

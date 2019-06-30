@@ -22,9 +22,7 @@ export type FilesArg = FileMap | string[]
 export type FileMap = { [name: string]: string | boolean }
 
 export interface Crawler<T extends Options> {
-  (root: string): Promise<
-    T['follow'] extends true | LinkFilter ? FileMap : string[]
-  >
-  (root: string, each: EachArg): Promise<void>
-  <T extends FilesArg>(root: string, files: T): Promise<T>
+  (root: string): T['follow'] extends true | LinkFilter ? FileMap : string[]
+  (root: string, each: EachArg): void
+  <T extends FilesArg>(root: string, files: T): T
 }
