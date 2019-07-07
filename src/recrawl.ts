@@ -37,7 +37,7 @@ export function recrawl<T extends RecrawlOptions>(
   return async (root: string, arg?: any) => {
     root = path.resolve(root) + path.sep
 
-    let each: EachArg | undefined
+    let each: EachArg
     let files: FilesArg | undefined
     if (typeof arg == 'function') {
       each = arg
@@ -70,7 +70,7 @@ export function recrawl<T extends RecrawlOptions>(
             mode = (await fs.lstat(root + file)).mode & S_IFMT
             if (mode === S_IFLNK) link = await follow(file, root)
           }
-          each!(file, link)
+          each(file, link)
         }
       }
     }
