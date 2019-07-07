@@ -1,6 +1,7 @@
 {
   "extends": "tslint-mango",
   "rules": {
-    "no-bitwise": false
+    "no-bitwise": false,
+    "no-unused-expression": false
   }
 }

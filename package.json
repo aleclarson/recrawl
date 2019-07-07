@@ -5,7 +5,9 @@
   "license": "MIT",
   "repository": "https://github.com/aleclarson/recrawl.git",
   "scripts": {
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "lint": "tslint -p .",
+    "test": "jest"
   },
   "dependencies": {
     "@cush/relative": "^0.1.0",
@@ -13,7 +15,10 @@
     "tslib": "^1.9.3"
   },
   "devDependencies": {
+    "@sucrase/jest-plugin": "^2.0.0",
+    "@types/jest": "^24.0.15",
     "@types/node": "^10.12.9",
+    "jest": "^24.8.0",
     "prettier": "^1.15.2",
     "tslint": "^5.11.0",
     "tslint-mango": "^0.1.6",
@@ -32,5 +37,10 @@
     "globby",
     "recrawl",
     "tiny"
-  ]
+  ],
+  "jest": {
+    "transform": {
+      ".(js|jsx|ts|tsx)": "@sucrase/jest-plugin"
+    }
+  }
 }

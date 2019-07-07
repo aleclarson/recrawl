@@ -1,0 +1,233 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`collects all descendants when no arguments are passed 1`] = `
+Array [
+  ".vscode/settings.json",
+  "a/1.js",
+  "a/b/2.js",
+  "a/b/c/3.js",
+  "index.js",
+  "node_modules/foo/package.json",
+  "z/1.js",
+  "z/b/2.js",
+  "z/b/c/3.js",
+]
+`;
+
+exports[`options.deep skips directories when false 1`] = `
+Array [
+  "index.js",
+]
+`;
+
+exports[`options.depth limits the traversal depth 1`] = `
+Array [
+  ".vscode/settings.json",
+  "a/1.js",
+  "index.js",
+  "z/1.js",
+]
+`;
+
+exports[`options.depth skips directories when zero 1`] = `
+Array [
+  "index.js",
+]
+`;
+
+exports[`options.enter can return false to skip a directory 1`] = `
+Array [
+  Array [
+    ".vscode",
+    0,
+  ],
+  Array [
+    "a",
+    0,
+  ],
+  Array [
+    "node_modules",
+    0,
+  ],
+  Array [
+    "z",
+    0,
+  ],
+]
+`;
+
+exports[`options.enter can return false to skip a directory 2`] = `
+Array [
+  "index.js",
+]
+`;
+
+exports[`options.enter is called before entering a directory 1`] = `
+Array [
+  Array [
+    ".vscode",
+    0,
+  ],
+  Array [
+    "a",
+    0,
+  ],
+  Array [
+    "a/b",
+    1,
+  ],
+  Array [
+    "a/b/c",
+    2,
+  ],
+  Array [
+    "node_modules",
+    0,
+  ],
+  Array [
+    "node_modules/foo",
+    1,
+  ],
+  Array [
+    "z",
+    0,
+  ],
+  Array [
+    "z/b",
+    1,
+  ],
+  Array [
+    "z/b/c",
+    2,
+  ],
+]
+`;
+
+exports[`options.filter is called after the "only" option is applied 1`] = `
+Array [
+  Array [
+    "a/1.js",
+    "1.js",
+  ],
+  Array [
+    "a/b/2.js",
+    "2.js",
+  ],
+  Array [
+    "a/b/c/3.js",
+    "3.js",
+  ],
+  Array [
+    "index.js",
+    "index.js",
+  ],
+  Array [
+    "z/1.js",
+    "1.js",
+  ],
+  Array [
+    "z/b/2.js",
+    "2.js",
+  ],
+  Array [
+    "z/b/c/3.js",
+    "3.js",
+  ],
+]
+`;
+
+exports[`options.filter is called after the "skip" option is applied 1`] = `
+Array [
+  Array [
+    ".vscode/settings.json",
+    "settings.json",
+  ],
+  Array [
+    "node_modules/foo/package.json",
+    "package.json",
+  ],
+]
+`;
+
+exports[`options.filter is called whenever a file or symlink is found 1`] = `
+Array [
+  Array [
+    ".vscode/settings.json",
+    "settings.json",
+  ],
+  Array [
+    "a/1.js",
+    "1.js",
+  ],
+  Array [
+    "a/b/2.js",
+    "2.js",
+  ],
+  Array [
+    "a/b/c/3.js",
+    "3.js",
+  ],
+  Array [
+    "index.js",
+    "index.js",
+  ],
+  Array [
+    "node_modules/foo/package.json",
+    "package.json",
+  ],
+  Array [
+    "z/1.js",
+    "1.js",
+  ],
+  Array [
+    "z/b/2.js",
+    "2.js",
+  ],
+  Array [
+    "z/b/c/3.js",
+    "3.js",
+  ],
+]
+`;
+
+exports[`options.follow is called whenever a symlink is found 1`] = `
+Array [
+  Array [
+    "index.js",
+    0,
+  ],
+]
+`;
+
+exports[`options.follow resolves every symlink when true 1`] = `
+Object {
+  ".vscode/settings.json": true,
+  "a/1.js": true,
+  "a/b/2.js": true,
+  "a/b/c/3.js": true,
+  "index.js": "b/c/3.js",
+  "node_modules/foo/package.json": true,
+  "z/1.js": true,
+  "z/b/2.js": true,
+  "z/b/c/3.js": true,
+}
+`;
+
+exports[`options.only is applied to files 1`] = `
+Array [
+  "a/1.js",
+  "a/b/2.js",
+  "a/b/c/3.js",
+  "index.js",
+  "z/1.js",
+  "z/b/2.js",
+  "z/b/c/3.js",
+]
+`;
+
+exports[`options.skip is applied to files 1`] = `
+Array [
+  ".vscode/settings.json",
+  "node_modules/foo/package.json",
+]
+`;
