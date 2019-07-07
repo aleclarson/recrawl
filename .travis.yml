@@ -1,0 +1,21 @@
+os:
+  - windows
+  - linux
+  - osx
+language: node_js
+node_js:
+  - '8'
+  - 'node'
+git:
+  depth: 1
+  quiet: true
+env:
+  - NODE_ENV=development
+cache:
+  yarn: true
+  directories:
+    - node_modules
+script:
+  - yarn lint
+  - yarn build
+  - yarn test
