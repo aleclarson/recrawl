@@ -54,11 +54,24 @@ export function recrawl<T extends RecrawlOptions>(
     const crawl = async (dir: string) => {
       for (const name of await fs.readdir(root + dir)) {
         const file = dir + name
-        if (skip(file, name)) continue
+        if (skip(file, name)) {
+          continue
+        }
 
-        let mode = (await fs.stat(root + file)).mode & S_IFMT
+        let mode: number | undefined
+        try {
+          mode = (await fs.stat(root + file)).mode & S_IFMT
+        } catch (err) {
+          if (err.code == 'ENOENT') {
+            continue // Ignore broken symlinks.
+          }
+          throw err
+        }
+
         if (mode == S_IFDIR) {
-          if (depth == maxDepth) continue
+          if (depth == maxDepth) {
+            continue
+          }
           if (enter(file, depth)) {
             depth++
             await crawl(file + path.sep)
