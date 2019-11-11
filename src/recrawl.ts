@@ -108,7 +108,7 @@ export type GlobMatcher = (file: string, name?: string) => boolean
  *
  * Note: This is only useful for globs with "/" or "**" in them.
  */
-export function compileGlob(glob: string, mapGlob?: (glob: string) => string) {
+export function compileGlob(glob: string, root?: string) {
   if (glob[0] == path.sep) {
     glob = glob.slice(1)
   } else if (glob[0] !== '*') {
@@ -117,7 +117,7 @@ export function compileGlob(glob: string, mapGlob?: (glob: string) => string) {
   if (glob.endsWith('/')) {
     glob += '**'
   }
-  if (mapGlob) glob = mapGlob(glob)
+  if (root) glob = path.join(root, glob)
   return globRegex.replace(glob)
 }
 
@@ -127,7 +127,7 @@ export function compileGlob(glob: string, mapGlob?: (glob: string) => string) {
  */
 export function createMatcher(
   globs: string[] | undefined,
-  mapGlob?: (glob: string) => string
+  root?: string
 ): GlobMatcher | null {
   if (!globs || !globs.length) {
     return null
@@ -136,9 +136,8 @@ export function createMatcher(
   const nameGlobs: string[] = []
   globs.forEach(glob => {
     if (globAllRE.test(glob)) {
-      fileGlobs.push(compileGlob(glob, mapGlob))
+      fileGlobs.push(compileGlob(glob, root))
     } else {
-      if (mapGlob) glob = mapGlob(glob)
       nameGlobs.push(globRegex.replace(glob))
     }
   })
