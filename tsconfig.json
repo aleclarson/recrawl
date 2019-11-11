@@ -9,6 +9,7 @@
     "noImplicitThis": true,
     "noImplicitUseStrict": true,
     "outDir": "lib",
+    "sourceMap": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "target": "es2017"
