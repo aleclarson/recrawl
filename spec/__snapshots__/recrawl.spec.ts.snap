@@ -205,7 +205,7 @@ Object {
   "a/1.js": true,
   "a/b/2.js": true,
   "a/b/c/3.js": true,
-  "index.js": "b/c/3.js",
+  "index.js": "a/b/c/3.js",
   "node_modules/foo/package.json": true,
   "z/1.js": true,
   "z/b/2.js": true,

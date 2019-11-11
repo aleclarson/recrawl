@@ -124,7 +124,7 @@ describe('options.filter', () => {
 describe('options.follow', () => {
   it('resolves every symlink when true', async () => {
     const paths = await crawl(root, { follow: true })
-    expect(paths['index.js']).toBe('a/b/c/3.js')
+    expect(paths).toMatchSnapshot()
   })
   it('is called whenever a symlink is found', async () => {
     const follow = jest.fn(() => true)
