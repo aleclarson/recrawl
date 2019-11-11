@@ -170,13 +170,17 @@ function createFollower(opts: RecrawlOptions) {
     let link = root + name
     let mode: number
     do {
-      const target = await fs.readlink(link)
+      let target = await fs.readlink(link)
       if (path.isAbsolute(target)) {
         name = null
         link = target
       }
       // When "target" is relative, resolve it.
       else if (name !== null) {
+        // The "relative" function expects ./ or ../
+        if (!/^\.\.?\//.test(target[0])) {
+          target = './' + target
+        }
         // This code path is faster.
         name = relative(name, target)
         link = root + name
