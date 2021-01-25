@@ -27,7 +27,8 @@
     "typescript": "^3.1.6"
   },
   "files": [
-    "lib"
+    "lib",
+    "src"
   ],
   "keywords": [
     "fs",
