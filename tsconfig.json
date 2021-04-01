@@ -5,12 +5,9 @@
     "lib": ["es2017"],
     "module": "commonjs",
     "importHelpers": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "noImplicitUseStrict": true,
     "outDir": "lib",
     "sourceMap": true,
-    "strictNullChecks": true,
+    "strict": true,
     "suppressImplicitAnyIndexErrors": true,
     "target": "es2017"
   }
