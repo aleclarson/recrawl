@@ -1,6 +1,7 @@
 import relative from '@cush/relative'
 import * as fs from 'fs'
 import globRegex from 'glob-regex'
+import slash from 'slash'
 import * as path from 'path'
 import { localFs } from './fs'
 import { Crawler, EachArg, FilesArg, RecrawlOptions } from './types'
@@ -35,7 +36,7 @@ export function recrawl<T extends RecrawlOptions>(
       : Infinity
 
   return async (root: string, arg?: any) => {
-    root = path.resolve(root) + path.sep
+    root = slash(path.resolve(root)) + '/'
 
     let each: EachArg
     let files: FilesArg | undefined
@@ -74,7 +75,7 @@ export function recrawl<T extends RecrawlOptions>(
           }
           if (enter(file, depth)) {
             depth++
-            await crawl(file + path.sep)
+            await crawl(file + '/')
             depth--
           }
         } else if (only(file, name) && filter(file, name)) {
@@ -94,7 +95,7 @@ export function recrawl<T extends RecrawlOptions>(
 }
 
 /** Tests true for absolute paths and globs starting with two asterisks. */
-const globAllRE = new RegExp(`(?:\\${path.sep}|\\*\\*)`)
+const globAllRE = /(?:\/|\*\*)/
 
 /** Merge regular expressions together. */
 const matchAny = (patterns: string[]) =>
@@ -109,7 +110,7 @@ export type GlobMatcher = (file: string, name?: string) => boolean
  * Note: This is only useful for globs with "/" or "**" in them.
  */
 export function compileGlob(glob: string, root?: string) {
-  if (glob[0] == path.sep) {
+  if (glob[0] == '/') {
     glob = glob.slice(1)
   } else if (glob[0] !== '*') {
     glob = '**/' + glob
@@ -117,7 +118,7 @@ export function compileGlob(glob: string, root?: string) {
   if (glob.endsWith('/')) {
     glob += '**'
   }
-  if (root) glob = path.join(root, glob)
+  if (root) glob = path.posix.join(root, glob)
   return globRegex.replace(glob)
 }
 
@@ -185,7 +186,7 @@ function createFollower(opts: RecrawlOptions) {
         name = relative(name, target)
         link = root + name
       } else {
-        link = path.resolve(path.dirname(link), target)
+        link = path.resolve(path.dirname(link), slash(target))
       }
       try {
         mode = (await fs.lstat(link)).mode & S_IFMT

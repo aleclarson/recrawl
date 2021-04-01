@@ -1,6 +1,7 @@
 dependencies:
   '@cush/relative': 0.1.0
   glob-regex: 0.3.2
+  slash: 3.0.0
   tslib: 1.10.0
 devDependencies:
   '@sucrase/jest-plugin': 2.0.0
@@ -3234,6 +3235,12 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-ZYKh3Wh2z1PpEXWr0MpSBZ0V6mZHAQfYevttO11c51CaWjGTaadiKZ+wVt1PbMlDV5qhMFslpZCemhwOK7C89A==
+  /slash/3.0.0:
+    dev: false
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
   /snapdragon-node/2.1.1:
     dependencies:
       define-property: 1.0.0
@@ -3997,6 +4004,7 @@ specifiers:
   glob-regex: ^0.3.0
   jest: ^24.8.0
   prettier: ^1.15.2
+  slash: ^3.0.0
   tslib: ^1.9.3
   tslint: ^5.11.0
   tslint-mango: ^0.1.6
