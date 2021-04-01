@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@cush/relative": "^0.1.0",
+    "@cush/relative": "^1.0.0",
     "glob-regex": "^0.3.0",
     "slash": "^3.0.0",
     "tslib": "^1.9.3"

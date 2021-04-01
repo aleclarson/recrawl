@@ -1,5 +1,5 @@
 dependencies:
-  '@cush/relative': 0.1.0
+  '@cush/relative': 1.0.0
   glob-regex: 0.3.2
   slash: 3.0.0
   tslib: 1.10.0
@@ -146,10 +146,10 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-r5160ogAvGyHsal38Kux7YYtodEKOj89RGb28ht1jh3SJb08VwRwAKKJL0bGb04Zd/3r9FL3BFIc3bBidYffCA==
-  /@cush/relative/0.1.0:
+  /@cush/relative/1.0.0:
     dev: false
     resolution:
-      integrity: sha512-pnF2c2hhHyC520CmYYKq3hGOS0kipkGBgRnp3z7wx7lDzykaUwQW3wPQmiX9YtbHUcgUu1qQtzstixmeYMwQoA==
+      integrity: sha512-RpfLEtTlyIxeNPGKcokS+p3BZII/Q3bYxryFRglh5H3A3T8q9fsLYm72VYAMEOOIBLEa8o93kFLiBDUWKrwXZA==
   /@jest/console/24.9.0:
     dependencies:
       '@jest/source-map': 24.9.0
@@ -3997,7 +3997,7 @@ packages:
     resolution:
       integrity: sha512-2eehun/8ALW8TLoIl7MVaRUrg+yCnenu8B4kBlRxj3GJGDKU1Og7sMXPNm1BYyM1DOJmTZ4YeN/Nwxv+8XJsUA==
 specifiers:
-  '@cush/relative': ^0.1.0
+  '@cush/relative': ^1.0.0
   '@sucrase/jest-plugin': ^2.0.0
   '@types/jest': ^24.0.15
   '@types/node': ^10.12.9

@@ -1,4 +1,4 @@
-import relative from '@cush/relative'
+import { relative } from '@cush/relative'
 import * as fs from 'fs'
 import globRegex from 'glob-regex'
 import slash from 'slash'
