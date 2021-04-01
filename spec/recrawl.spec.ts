@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import slash from 'slash'
 import { crawl } from '../src/recrawl'
 
 const root = path.join(__dirname, '__fixtures__', 'root')
@@ -38,7 +39,9 @@ describe('options.only', () => {
     expect(paths).not.toContain('node_modules/foo/package.json')
   })
   it('is applied to symlinks', async () => {
-    expect(fs.readlinkSync(path.join(root, 'index.js'))).toBe('a/b/c/3.js')
+    const target = fs.readlinkSync(path.join(root, 'index.js'))
+    expect(slash(target)).toBe('a/b/c/3.js')
+
     const paths = await crawl(root, { only: ['index.js'] })
     expect(paths).toEqual(['index.js'])
   })
