@@ -171,7 +171,7 @@ function createFollower(opts: RecrawlOptions) {
     let link = root + name
     let mode: number
     do {
-      let target = await fs.readlink(link)
+      let target = slash(await fs.readlink(link))
       if (path.isAbsolute(target)) {
         name = null
         link = target
@@ -186,7 +186,7 @@ function createFollower(opts: RecrawlOptions) {
         name = relative(name, target)
         link = root + name
       } else {
-        link = path.resolve(path.dirname(link), slash(target))
+        link = path.resolve(path.dirname(link), target)
       }
       try {
         mode = (await fs.lstat(link)).mode & S_IFMT
