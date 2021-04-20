@@ -6,8 +6,8 @@ export type LinkFilter = (link: string, depth: number) => boolean
 
 export type RecrawlOptions = Options
 type Options = {
-  only?: string[]
-  skip?: string[]
+  only?: (string | RegExp)[]
+  skip?: (string | RegExp)[]
   deep?: boolean
   depth?: number
   enter?: DirFilter

@@ -130,7 +130,7 @@ export function compileGlob(glob: string, root?: string) {
  * compiling them into RegExp objects.
  */
 export function createMatcher(
-  globs: string[] | undefined,
+  globs: (string | RegExp)[] | undefined,
   root?: string
 ): GlobMatcher | null {
   if (!globs || !globs.length) {
@@ -139,7 +139,9 @@ export function createMatcher(
   const fileGlobs: string[] = []
   const nameGlobs: string[] = []
   globs.forEach(glob => {
-    if (globAllRE.test(glob)) {
+    if (glob instanceof RegExp) {
+      fileGlobs.push(glob.source)
+    } else if (globAllRE.test(glob)) {
       fileGlobs.push(compileGlob(glob, root))
     } else {
       nameGlobs.push(globRegex.replace(glob))
