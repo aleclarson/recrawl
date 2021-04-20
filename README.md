@@ -49,8 +49,9 @@ crawl(root, {
 
 ### Options
 
-- `only?: string|string[]`
-- `skip?: string|string[]`
+- `only?: (string|RegExp)[]`
+- `skip?: (string|RegExp)[]`
+- `absolute?: boolean`
 - `deep?: boolean`
 - `depth?: number`
 - `enter?: function`
@@ -62,6 +63,8 @@ The `only` and `skip` options should be self-explanatory. Paths matching any of
 the `only` patterns are good. When `only` is an empty array, all paths are good.
 Paths matching any of the `skip` patterns are bad. When `skip` is an empty
 array, no paths are bad. The `skip` patterns override the `only` patterns.
+
+The `absolute` option converts matching file paths into their absolute form.
 
 To avoid crawling sub-directories, set `deep` to false or `depth` to 0. You
 should never define both `deep` and `depth`, because the `depth` option implies
