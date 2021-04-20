@@ -14,6 +14,7 @@ type Options = {
   filter?: FileFilter
   follow?: boolean | number | LinkFilter
   adapter?: FileAdapter
+  absolute?: boolean
 }
 
 export type EachArg = (file: string, link: string | null) => void

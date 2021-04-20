@@ -54,7 +54,7 @@ export function recrawl<T extends RecrawlOptions>(
     let depth = 0
     const crawl = async (dir: string) => {
       for (const name of await fs.readdir(root + dir)) {
-        const file = dir + name
+        let file = dir + name
         if (skip(file, name)) {
           continue
         }
@@ -83,6 +83,9 @@ export function recrawl<T extends RecrawlOptions>(
           if (follow) {
             mode = (await fs.lstat(root + file)).mode & S_IFMT
             if (mode === S_IFLNK) link = await follow(file, root)
+          }
+          if (opts.absolute) {
+            file = root + file
           }
           each(file, link)
         }
