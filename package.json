@@ -1,6 +1,6 @@
 {
   "name": "recrawl-sync",
-  "version": "2.0.3",
+  "version": "2.2.1",
   "main": "lib/recrawl.js",
   "license": "MIT",
   "homepage": "https://github.com/aleclarson/recrawl/tree/sync",
