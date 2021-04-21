@@ -191,7 +191,7 @@ function createFollower(opts: RecrawlOptions) {
         name = relative(name, target)
         link = root + name
       } else {
-        link = path.resolve(path.dirname(link), target)
+        link = slash(path.resolve(path.dirname(link), target))
       }
       try {
         mode = (await fs.lstat(link)).mode & S_IFMT
