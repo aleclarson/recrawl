@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import slash from 'slash'
+import slash = require('slash')
 import { crawl } from '../src/recrawl'
 
 const root = path.join(__dirname, '__fixtures__', 'root')
