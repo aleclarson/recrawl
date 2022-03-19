@@ -62,7 +62,7 @@ export function recrawl<T extends RecrawlOptions>(
         let mode: number | undefined
         try {
           mode = fs.stat(root + file).mode & S_IFMT
-        } catch (err) {
+        } catch (err: any) {
           if (err.code == 'ENOENT') {
             continue // Ignore broken symlinks.
           }
@@ -75,7 +75,13 @@ export function recrawl<T extends RecrawlOptions>(
           }
           if (enter(file, depth)) {
             depth++
-            crawl(file + '/')
+            try {
+              crawl(file + '/')
+            } catch (err: any) {
+              if (err.code !== 'EACCES') {
+                throw err
+              }
+            }
             depth--
           }
         } else if (only(file, name) && filter(file, name)) {
