@@ -63,7 +63,7 @@ export function recrawl<T extends RecrawlOptions>(
         try {
           mode = fs.stat(root + file).mode & S_IFMT
         } catch (err: any) {
-          if (err.code == 'ENOENT') {
+          if (err.code == 'ENOENT' || err.code == 'ELOOP') {
             continue // Ignore broken symlinks.
           }
           throw err
